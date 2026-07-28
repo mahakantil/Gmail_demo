@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail - Secure, smart and easy to use email</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+  <style>
+    /* Base Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #ffffff;
+      color: #202124;
+      overflow-x: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar styles */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      background: white;
+      border-bottom: 1px solid #f1f3f4;
+      position: relative;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    .nav-left, .nav-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 500;
+      color: #5f6368;
+    }
+
+    .logo img {
+      height: 24px;
+    }
+
+    /* --- UPDATE: Login बटन को भी Create Account जैसा Red Box बनाया --- */
+    .btn-signin, .btn-create {
+      text-decoration: none;
+      background-color: #ea4335;
+      color: white;
+      padding: 10px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+      transition: background-color 0.2s;
+    }
+
+    .btn-signin:hover, .btn-create:hover {
+      background-color: #d93025; /* होवर करने पर हल्का गहरा लाल */
+    }
+    
+    .margin-right {
+      margin-right: 15px;
+    }
+
+    /* Hero Section Base */
+    .hero-container {
+      position: relative;
+      padding: 40px 80px;
+      max-width: 1440px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Abstract Background Shapes */
+    .shape {
+      position: absolute;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .shape-blue {
+      width: 400px;
+      height: 400px;
+      background: #e8f0fe;
+      top: -50px;
+      left: -100px;
+      filter: blur(40px);
+      opacity: 0.7;
+    }
+    .shape-green {
+      width: 250px;
+      height: 250px;
+      background: #e6f4ea;
+      bottom: 5%;
+      left: 35%;
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    }
+    .shape-yellow {
+      width: 350px;
+      height: 350px;
+      background: #fef7e0;
+      right: -100px;
+      top: 10%;
+      filter: blur(20px);
+    }
+
+    /* --- Floating Avatars & Emojis --- */
+    .floating-avatar {
+      position: absolute;
+      z-index: 1;
+      font-size: 55px; 
+      filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.15));
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Floating Animations */
+    @keyframes floatUpSoft {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    @keyframes floatDownSoft {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(15px) rotate(-3deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    /* --- UPDATE: राइट साइड वाले इमोजीस की पोजीशन को और बाहर (Edge पर) खिसकाया --- */
+    .avatar-1 { top: 15%; left: 4%; animation: floatUpSoft 6s ease-in-out infinite; font-size: 65px; }
+    .avatar-2 { bottom: 12%; left: 8%; animation: floatDownSoft 5s ease-in-out infinite; font-size: 60px; }
+    .avatar-3 { top: 18%; right: 4%; animation: floatDownSoft 7s ease-in-out infinite; font-size: 70px; } /* right 15% से 4% किया */
+    .avatar-4 { bottom: 15%; right: 3%; animation: floatUpSoft 5.5s ease-in-out infinite; font-size: 65px; } /* right 8% से 3% किया */
+    
+    .icon-handshake-1 { top: 52%; left: 2%; animation: floatDownSoft 4s ease-in-out infinite; font-size: 35px; opacity: 0.7; }
+    .icon-handshake-2 { bottom: 38%; right: 2%; animation: floatUpSoft 4.5s ease-in-out infinite; font-size: 35px; opacity: 0.7; } /* right 3% से 2% किया */
+    .icon-mail { top: 12%; left: 45%; animation: floatUpSoft 6.5s ease-in-out infinite; font-size: 40px; opacity: 0.7; }
+
+    /* Layout Core Grid */
+    .hero-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 40px;
+      position: relative;
+      z-index: 2; 
+    }
+
+    .hero-text {
+      flex: 1;
+      max-width: 450px;
+    }
+
+    .hero-text h1 {
+      font-size: 44px;
+      font-weight: 700;
+      line-height: 52px;
+      color: #202124;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 16px;
+      line-height: 26px;
+      color: #5f6368;
+      margin-bottom: 28px;
+    }
+
+    .btn-get-started {
+      display: inline-block;
+      text-decoration: none;
+      background-color: #ea4335;
+      color: white;
+      padding: 14px 32px;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    /* Gmail Web App Mockup Window */
+    .gmail-mockup {
+      flex: 1.3;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid #f1f3f4;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 480px; 
+    }
+
+    .mockup-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f3f4;
+      flex-shrink: 0;
+    }
+
+    .mockup-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mockup-logo {
+      height: 20px;
+    }
+    .mockup-brand {
+      font-weight: 500;
+      color: #5f6368;
+      margin-right: 20px;
+    }
+
+    .search-input-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #f1f3f4;
+      padding: 6px 12px;
+      border-radius: 8px;
+      gap: 10px;
+    }
+
+    .search-input-wrapper input {
+      border: none;
+      background: transparent;
+      width: 100%;
+      outline: none;
+    }
+
+    .mockup-header-icons {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #5f6368;
+    }
+
+    .avatar {
+      width: 28px;
+      height: 28px;
+      background: #78909c;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+    }
+
+    .mockup-body {
+      display: flex;
+      flex: 1;
+      overflow: hidden; 
+    }
+
+    /* Sidebar Inside Mockup */
+    .mockup-sidebar {
+      width: 200px;
+      padding: 16px 8px;
+      border-right: 1px solid #f1f3f4;
+      overflow-y: auto;
+    }
+
+    .btn-compose {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #c2e7ff;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 16px;
+      font-weight: 500;
+      color: #001d35;
+      margin-bottom: 16px;
+      cursor: pointer;
+    }
+
+    .sidebar-menu, .sidebar-labels ul {
+      list-style: none;
+    }
+
+    .sidebar-menu li, .sidebar-labels li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+      border-radius: 0 16px 16px 0;
+      font-size: 14px;
+      color: #444746;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-menu li.active {
+      background: #fce8e6;
+      color: #b3261e;
+      font-weight: 500;
+    }
+
+    .sidebar-labels {
+      margin-top: 24px;
+    }
+    .labels-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 12px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #444746;
+      margin-bottom: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-blue { background: #ea4335; }
+    .dot-navy { background: #001d35; }
+    .dot-yellow { background: #f9ab00; }
+
+    /* Email List Mockup Column */
+    .email-list-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .email-tabs {
+      display: flex;
+      border-bottom: 1px solid #f1f3f4;
+      flex-shrink: 0;
+    }
+
+    .tab {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #5f6368;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tab.active {
+      color: #ea4335;
+      border-bottom-color: #ea4335;
+    }
+
+    .email-rows {
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto; 
+      flex: 1;
+    }
+
+    .email-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #f1f3f4;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .email-row.unread {
+      background: #f8f9fa;
+      font-weight: 700;
+    }
+
+    .row-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sender {
+      min-width: 120px;
+    }
+
+    .subject {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      padding: 0 16px;
+    }
+
+    .snippet {
+      font-weight: 400;
+      color: #5f6368;
+    }
+
+    .time {
+      font-size: 12px;
+      color: #5f6368;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .star { color: #e8eaed; }
+
+    @media (max-width: 1024px) {
+      .floating-avatar { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="nav-left">
+      <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail Logo">
+        <span>Gmail</span>
+      </div>
+    </div>
+    <div class="nav-right">
+      <a href="/login" class="btn-signin margin-right">Login</a>
+      <a href="/signup" class="btn-create">Create account</a>
+    </div>
+  </header>
+
+  <main class="hero-container">
+    <div class="shape shape-blue"></div>
+    <div class="shape shape-green"></div>
+    <div class="shape shape-yellow"></div>
+
+    <div class="floating-avatar avatar-1">👩‍💼</div>
+    <div class="floating-avatar avatar-2">👩‍💻</div>
+    <div class="floating-avatar avatar-3">🧑‍💼</div>
+    <div class="floating-avatar avatar-4">👨‍💼</div>
+    <div class="floating-avatar icon-handshake-1">🤝</div>
+    <div class="floating-avatar icon-handshake-2">🤝</div>
+    <div class="floating-avatar icon-mail">✉️</div>
+
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Secure, smart and easy to use email</h1>
+        <p>Gmail is more than just email. It's a secure, intelligent and easy to use platform that helps you stay connected and get more done with integrated tools.</p>
+        <a href="/signup" class="btn-get-started">Get Started</a>
+      </div>
+
+      <div class="gmail-mockup">
+        <div class="mockup-header">
+          <div class="mockup-search-bar">
+            <span class="material-symbols-outlined">menu</span>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Gmail Logo" class="mockup-logo">
+            <span class="mockup-brand">Gmail</span>
+            <div class="search-input-wrapper">
+              <span class="material-symbols-outlined">search</span>
+              <input type="text" placeholder="Search mail" disabled>
+              <span class="material-symbols-outlined">tune</span>
+            </div>
+            <div class="mockup-header-icons">
+              <span class="material-symbols-outlined">help</span>
+              <span class="material-symbols-outlined">settings</span>
+              <span class="material-symbols-outlined">apps</span>
+              <div class="avatar">A</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="mockup-body">
+          <aside class="mockup-sidebar">
+            <button class="btn-compose">
+              <span class="material-symbols-outlined">edit</span> Compose
+            </button>
+            <ul class="sidebar-menu">
+              <li class="active"><span class="material-symbols-outlined">inbox</span> Inbox</li>
+              <li><span class="material-symbols-outlined">star</span> Starred</li>
+              <li><span class="material-symbols-outlined">schedule</span> Snoozed</li>
+              <li><span class="material-symbols-outlined">send</span> Sent</li>
+              <li><span class="material-symbols-outlined">description</span> Drafts</li>
+              <li><span class="material-symbols-outlined">expand_more</span> More</li>
+            </ul>
+            <div class="sidebar-labels">
+              <div class="labels-header">
+                <span>Labels</span>
+                <span class="material-symbols-outlined">add</span>
+              </div>
+              <ul>
+                <li><span class="dot dot-blue"></span> Work</li>
+                <li><span class="dot dot-navy"></span> Personal</li>
+                <li><span class="dot dot-yellow"></span> Travel</li>
+                <li><span class="material-symbols-outlined">expand_more</span> More</li>
+              </ul>
+            </div>
+          </aside>
+
+          <section class="email-list-container">
+            <div class="email-tabs">
+              <div class="tab active"><span class="material-symbols-outlined">inbox</span> Primary</div>
+              <div class="tab"><span class="material-symbols-outlined">group</span> Social</div>
+              <div class="tab"><span class="material-symbols-outlined">local_offer</span> Promotions</div>
+            </div>
+            
+            <div class="email-rows">
+              <div class="email-row unread">
+                <div class="row-left">
+                  <input type="checkbox">
+                  <span class="material-symbols-outlined star">star</span>
+                  <span class="sender">Google</span>
+                </div>
+                <span class="subject">Security alert <span class="snippet">- Your Google account was sign-in...</span></span>
+                <span class="time">9:30 AM</span>
+              </div>
+              <div class="email-row">
+                <div class="row-left">
+                  <input type="checkbox">
+                  <span class="material-symbols-outlined star">star</span>
+                  <span class="sender">Team Gmail</span>
+                </div>
+                <span class="subject">Tips for using your new inbox <span class="snippet">- Welcome to your inbox! Find tips...</span></span>
+                <span class="time">8:15 AM</span>
+              </div>
+              <div class="email-row">
+                <div class="row-left">
+                  <input type="checkbox">
+                  <span class="material-symbols-outlined star">star</span>
+                  <span class="sender">Google Workspace</span>
+                </div>
+                <span class="subject">Welcome to Google Workspace <span class="snippet">- Collaborate and get more done...</span></span>
+                <span class="time">Yesterday</span>
+              </div>
+              <div class="email-row">
+                <div class="row-left">
+                  <input type="checkbox">
+                  <span class="material-symbols-outlined star">star</span>
+                  <span class="sender">Anna Smith</span>
+                </div>
+                <span class="subject">Project update <span class="snippet">- Hi, just sharing the latest update...</span></span>
+                <span class="time">Yesterday</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body { 
+            width: 100vw;
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: radial-gradient(circle at 50% 50%, #fdfcfc 0%, #f5f2f2 100%); 
+            position: relative;
+            overflow: hidden; 
+            perspective: 2000px;
+            margin: 0;
+        }
+
+        /* --- RED AND WHITE THEME AMBIENT GLOW --- */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(234, 67, 53, 0.08) 0%, transparent 70%);
+            top: -10%;
+            right: -5%;
+            filter: blur(60px);
+            z-index: 1;
+        }
+
+        /* --- FIXED FLOATING LETTERS & EMOJIS (SIGNUP THEME) --- */
+        .bg-element {
+            position: fixed; 
+            color: rgba(234, 67, 53, 0.15); 
+            font-weight: 800;
+            pointer-events: none;
+            user-select: none;
+            animation: floatUpDown 14s linear infinite;
+            z-index: 1;
+            filter: drop-shadow(0 2px 5px rgba(234, 67, 53, 0.1));
+        }
+
+        /* Positions and Sizes for S-I-G-N-U-P */
+        .p1 { top: 8%; left: 10%; animation-delay: 0s; font-size: 70px; }
+        .p2 { top: 25%; right: 8%; animation-delay: 2.5s; font-size: 65px; }
+        .p3 { bottom: 15%; left: 8%; animation-delay: 5s; font-size: 75px; }
+        .p4 { bottom: 20%; right: 12%; animation-delay: 1.2s; font-size: 70px; }
+        .p5 { top: 45%; left: 3%; animation-delay: 7s; font-size: 60px; }
+        .p6 { bottom: 45%; right: 4%; animation-delay: 3.8s; font-size: 68px; }
+        
+        /* Signup & Creation Emojis */
+        .e1 { top: 5%; right: 35%; animation-delay: 1.8s; font-size: 50px; opacity: 0.3; }  
+        .e2 { bottom: 8%; left: 40%; animation-delay: 4.5s; font-size: 55px; opacity: 0.3; } 
+        .e3 { top: 65%; left: 18%; animation-delay: 8s; font-size: 45px; opacity: 0.3; } 
+        .e4 { top: 30%; right: 22%; animation-delay: 0.8s; font-size: 48px; opacity: 0.3; } 
+
+        @keyframes floatUpDown {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.9);
+                opacity: 0;
+            }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% {
+                transform: translateY(-15vh) rotate(360deg) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* --- SIGNUP MAIN CARD (3D GLOW & HOVER EFFECT) --- */
+        .signup-card { 
+            background: #ffffff; 
+            padding: 40px 35px; 
+            border-radius: 32px; 
+            border: 2px solid #fce8e6;
+            width: 100%; 
+            max-width: 460px; 
+            z-index: 2;
+            box-shadow: 0 10px 35px rgba(234, 67, 53, 0.04);
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin: auto;
+        }
+
+        .signup-card:hover {
+            transform: translateY(-6px) rotateX(4deg) rotateY(5deg); 
+            border-color: rgba(234, 67, 53, 0.5); 
+            box-shadow: 
+                0 0 35px rgba(234, 67, 53, 0.25),   
+                0 20px 45px rgba(234, 67, 53, 0.1),    
+                0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .signup-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #ea4335; /* Premium Gmail Red Header */
+            letter-spacing: -0.5px;
+            transform: translateZ(25px);
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #1f1f1f;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 11px 16px;
+            border-radius: 12px;
+            border: 1px solid #dadce0;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ea4335;
+            box-shadow: 0 0 0 3px rgba(234, 67, 53, 0.1);
+        }
+
+        /* Main Submit Button (Premium Gmail Red) */
+        .btn-signup-main {
+            background-color: #ea4335;
+            color: white;
+            font-weight: 500;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            transition: all 0.2s ease;
+            transform: translateZ(20px);
+        }
+
+        .btn-signup-main:hover {
+            background-color: #d93025;
+            box-shadow: 0 4px 18px rgba(234, 67, 53, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .footer-link a {
+            color: #ea4335;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+        .footer-link a:hover {
+            color: #d93025;
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Floating Decorators (S-I-G-N-U-P) -->
+<div class="bg-element p1">S</div>
+<div class="bg-element p2">I</div>
+<div class="bg-element p3">G</div>
+<div class="bg-element p4">N</div>
+<div class="bg-element p5">U</div>
+<div class="bg-element p6">P</div>
+
+<!-- Signup Themed Emojis -->
+<div class="bg-element e1">📝</div> 
+<div class="bg-element e2">👤</div> 
+<div class="bg-element e3">🛡️</div> 
+<div class="bg-element e4">✉️</div> 
+
+<!-- Centralized 3D Card Form -->
+<div class="signup-card">
+    <h3 class="text-center mb-4 signup-title">Create Account</h3>
+    
+    <!-- 🎯 यह डेटा को /signup वाले POST रूट पर भेजेगा -->
+    <form action="/signup" method="POST">
+        <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" name="fullName" class="form-control" placeholder="Enter your full name" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Username</label>
+            <input type="text" name="username" class="form-control" placeholder="Enter a username" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+        </div>
+
+        <button type="submit" class="btn btn-signup-main w-100 mt-2">Sign Up</button>
+    </form>
+    
+    <div class="text-center mt-3 footer-link">
+        <a href="/list" class="text-decoration-none text-muted small">View Registered Users</a>
+    </div>
+</div>
+
+</body>
+</html>

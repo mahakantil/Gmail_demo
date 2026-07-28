@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login with Face Verification</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Google Sans', Roboto, system-ui, -apple-system, sans-serif;
+        }
+
+        body { 
+            width: 100vw;
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            background: radial-gradient(circle at 50% 50%, #fdfcfc 0%, #f5f2f2 100%); 
+            position: relative;
+            overflow: hidden; 
+            perspective: 2000px;
+            margin: 0;
+        }
+
+        /* --- RED AND WHITE THEME AMBIENT GLOW --- */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(234, 67, 53, 0.08) 0%, transparent 70%);
+            top: -10%;
+            right: -5%;
+            filter: blur(60px);
+            z-index: 1;
+        }
+
+        /* --- FIXED FLOATING LETTERS & EMOJIS --- */
+        .bg-element {
+            position: fixed; 
+            color: rgba(234, 67, 53, 0.15); 
+            font-weight: 800;
+            pointer-events: none;
+            user-select: none;
+            animation: floatUpDown 14s linear infinite;
+            z-index: 1;
+            filter: drop-shadow(0 2px 5px rgba(234, 67, 53, 0.1));
+        }
+
+        /* Positions and Sizes for L-O-G-I-N */
+        .p1 { top: 12%; left: 8%; animation-delay: 0s; font-size: 70px; }
+        .p2 { top: 22%; right: 12%; animation-delay: 3s; font-size: 65px; }
+        .p3 { bottom: 18%; left: 15%; animation-delay: 6s; font-size: 80px; }
+        .p4 { bottom: 22%; right: 8%; animation-delay: 1.5s; font-size: 75px; }
+        .p5 { top: 45%; left: 4%; animation-delay: 8s; font-size: 65px; }
+        
+        /* Login & Security Emojis */
+        .e1 { top: 5%; right: 40%; animation-delay: 2s; font-size: 50px; opacity: 0.3; }  
+        .e2 { bottom: 8%; left: 45%; animation-delay: 5s; font-size: 55px; opacity: 0.3; } 
+        .e3 { top: 60%; left: 22%; animation-delay: 9s; font-size: 45px; opacity: 0.3; } 
+        .e4 { top: 35%; right: 25%; animation-delay: 1s; font-size: 48px; opacity: 0.3; } 
+
+        @keyframes floatUpDown {
+            0% {
+                transform: translateY(105vh) rotate(0deg) scale(0.9);
+                opacity: 0;
+            }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% {
+                transform: translateY(-15vh) rotate(360deg) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        /* --- LOGIN MAIN CARD (3D GLOW & HOVER EFFECT) --- */
+        .login-card { 
+            background: #ffffff; 
+            padding: 40px 35px; 
+            border-radius: 32px; 
+            border: 2px solid #fce8e6;
+            width: 100%; 
+            max-width: 440px; 
+            z-index: 2;
+            box-shadow: 0 10px 35px rgba(234, 67, 53, 0.04);
+            backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+            margin: auto;
+        }
+
+        .login-card:hover {
+            transform: translateY(-6px) rotateX(4deg) rotateY(5deg); 
+            border-color: rgba(234, 67, 53, 0.5); 
+            box-shadow: 
+                0 0 35px rgba(234, 67, 53, 0.25),   
+                0 20px 45px rgba(234, 67, 53, 0.1),    
+                0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+
+        .login-title {
+            font-size: 28px;
+            font-weight: 500;
+            color: #ea4335; /* Gmail Brand Red Header */
+            letter-spacing: -0.5px;
+            transform: translateZ(25px);
+        }
+        
+        /* 📷 Camera Scanner Box Styling (Red Theme Match) */
+        .webcam-container {
+            display: none; 
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            border: 3px solid #ea4335; /* Red Border Scanner Box */
+            box-shadow: 0 0 15px rgba(234, 67, 53, 0.2);
+            transform: translateZ(20px);
+        }
+
+        video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transform: scaleX(-1); 
+        }
+        
+        /* Neon Scanning Bar Animation - Turned Red */
+        .scan-bar {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: #ea4335;
+            box-shadow: 0 0 15px #ea4335;
+            animation: scan 1.5s linear infinite; 
+            z-index: 10;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #1f1f1f;
+            font-size: 14px;
+        }
+
+        .form-control {
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #dadce0;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            border-color: #ea4335;
+            box-shadow: 0 0 0 3px rgba(234, 67, 53, 0.1);
+        }
+        
+        /* Face ID Trigger Button */
+        .btn-face {
+            background-color: #1f2937;
+            color: white;
+            font-weight: 500;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            transition: 0.3s;
+            transform: translateZ(20px);
+        }
+
+        .btn-face:hover { 
+            background-color: #111827; 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(31, 41, 55, 0.25);
+        }
+
+        /* Success Verification State Style overrides via JS */
+        .btn-face.verified-state {
+            border: 1px solid #28a745 !important;
+            color: #28a745 !important;
+            background-color: #f4fbf6 !important;
+        }
+
+        /* Main Submit Login Button (Premium Gmail Red) */
+        .btn-login-main {
+            background-color: #ea4335;
+            color: white;
+            font-weight: 500;
+            padding: 13px;
+            border-radius: 12px;
+            border: none;
+            transition: all 0.2s ease;
+            transform: translateZ(20px);
+        }
+
+        .btn-login-main:hover:not([disabled]) {
+            background-color: #d93025;
+            box-shadow: 0 4px 18px rgba(234, 67, 53, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-login-main:disabled {
+            background-color: #f1f3f4;
+            color: #9aa0a6;
+            cursor: not-allowed;
+        }
+
+        .footer-link a {
+            color: #ea4335;
+            font-weight: 500;
+        }
+        .footer-link a:hover {
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-element p1">L</div>
+<div class="bg-element p2">O</div>
+<div class="bg-element p3">G</div>
+<div class="bg-element p4">I</div>
+<div class="bg-element p5">N</div>
+
+<div class="bg-element e1">🔑</div> 
+<div class="bg-element e2">✉️</div> 
+<div class="bg-element e3">🛡️</div> 
+<div class="bg-element e4">🧑‍💻</div> 
+
+<div class="login-card">
+    <h3 class="text-center mb-4 login-title">Login Account</h3>
+    
+    <div class="webcam-container" id="camera-box">
+        <div class="scan-bar"></div>
+        <video id="video" autoplay muted playsinline></video>
+    </div>
+
+    <form action="/login" method="POST" id="login-form">
+        <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" name="email" class="form-control" placeholder="Enter your email" value="mahak123@gmail.com" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+        </div>
+
+        <button type="button" class="btn btn-face w-100 mb-3" id="start-face-verify">
+            <i class="fa-solid fa-face-smile" style="margin-right: 8px;"></i> Verify Face Id
+        </button>
+
+        <button type="submit" class="btn btn-login-main w-100" id="submit-btn" disabled>Login</button>
+    </form>
+    
+    <div class="text-center mt-3 footer-link">
+        <p class="text-muted small mb-0">Don't have an account? <a href="/signup" class="text-decoration-none">Sign Up</a></p>
+    </div>
+</div>
+
+<script>
+    const faceBtn = document.getElementById('start-face-verify');
+    const cameraBox = document.getElementById('camera-box');
+    const video = document.getElementById('video');
+    const submitBtn = document.getElementById('submit-btn');
+    let localStream = null;
+
+    faceBtn.addEventListener('click', async () => {
+        faceBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Scanning Face...`;
+        faceBtn.disabled = true;
+
+        try {
+            // 1. Immediate Camera Turn On
+            localStream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 400, height: 300, facingMode: "user" } 
+            });
+            
+            cameraBox.style.display = 'block';
+            video.srcObject = localStream;
+
+            // 2. 🎯 Exact 3 Seconds Countdown Timer for Auto-Off & Verification Success
+            setTimeout(() => {
+                if (localStream) {
+                    // Turn Off Camera hardware safely
+                    localStream.getTracks().forEach(track => track.stop());
+                }
+                
+                // Hide camera UI box
+                cameraBox.style.display = 'none';
+                
+                // 🎯 Change button style and text to successful green state
+                faceBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Verified Face Id Successfully ✅`;
+                faceBtn.classList.add("verified-state");
+                faceBtn.disabled = true; // Keep it locked as successful
+                
+                // Unlock the Main Login Button
+                submitBtn.disabled = false;
+
+            }, 3000); // 3000 milliseconds = 3 Seconds
+
+        } catch (err) {
+            console.error("Camera Access Error:", err);
+            alert("🔒 Camera access denied! Please allow permissions to scan.");
+            faceBtn.disabled = false;
+            faceBtn.innerHTML = `<i class="fa-solid fa-face-smile" style="margin-right: 8px;"></i> Verify Face Id`;
+        }
+    });
+</script>
+
+</body>
+</html>

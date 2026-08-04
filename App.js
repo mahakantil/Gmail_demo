@@ -5,7 +5,7 @@ const path = require("path");
 const hbs = require("hbs");
 const cors = require('cors');
 const https = require('https');
-const Register = require("./models/register"); 
+const Register = require("./Models/register"); 
 const app = express();
 const port = process.env.PORT || 2020;
 
@@ -13,9 +13,9 @@ dotenv.config();
 
 require("./db/conn");
 
-const static_path = path.join(__dirname, "./public"); 
-const template_path = path.join(__dirname, "./hbs"); 
-const partials_path = path.join(__dirname, "./hbs"); 
+const static_path = path.join(__dirname, "./public");
+const template_path = path.join(__dirname, "./hbs");
+const partials_path = path.join(__dirname, "./hbs");
 
 // Middlewares
 app.use(cors());

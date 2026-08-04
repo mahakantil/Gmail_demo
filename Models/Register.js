@@ -19,8 +19,7 @@ const registerSchema = new mongoose.Schema({
         required: true
     }
 }, {
-    timestamps: true 
+    timestamps: true
 });
-
 // This line compiles the model AND exports it all at once
 module.exports = mongoose.model("Register", registerSchema);

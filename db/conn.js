@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 // process.env ka use karke .env file se URL dynamically read hoga
 const DB = process.env.DATABASE_URL;

@@ -16,5 +16,11 @@
     "url": "https://github.com/mahakantil/Gmail_demo/issues"
   },
   "homepage": "https://github.com/mahakantil/Gmail_demo#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "hbs": "^4.2.1",
+    "mongoose": "^9.9.1"
+  }
 }

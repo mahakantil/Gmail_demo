@@ -19,7 +19,6 @@ const port = process.env.PORT || 2020;
 const static_path = path.join(__dirname, "./public");
 const template_path = path.join(__dirname, "./hbs");
 const partials_path = path.join(__dirname, "./hbs");
-
 // Middlewares
 app.use(cors());
 app.use(express.json());

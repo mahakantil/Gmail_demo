@@ -5,7 +5,8 @@ const path = require("path");
 const hbs = require("hbs");
 const cors = require('cors');
 const https = require('https');
-const Register = require("./Models/register"); 
+const Register = require("./Models/Register");
+ const conn = require("./db/conn");
 const app = express();
 const port = process.env.PORT || 2020;
 
